@@ -10,10 +10,12 @@ plugins:
   - jekyll-include-cache
   - jekyll-remote-theme
 
+sass:
+  style: compressed
 # ----------- NAVIGATION -----------
 include:
   - _pages
-
+  - assets/css/custom.css
 # ----------- DEFAULT CONFIG FOR PAGES -----------
 defaults:
   - scope:
@@ -27,9 +29,3 @@ defaults:
 
 # ----------- BUILD -----------
 markdown: kramdown
-# Images aléatoires pour header
-random_header_images:
-  - /assets/images/header/bg1.png
-  - /assets/images/header/bg2.png
-  - /assets/images/header/bg3.png
-  - /assets/images/header/bg4.png
