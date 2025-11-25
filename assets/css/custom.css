@@ -11,14 +11,32 @@ body {
 .content-card {
   max-width: 1100px;
   margin: 3rem auto;
-  background: rgba(255, 255, 255, 0.97);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  background: rgba(15, 15, 15, 0.92);      /* gris très foncé */
+  color: #f3f3f3;                           /* texte clair */
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* === NAVBAR NOIR / BLANC / JAUNE IMPGEO === */
+/* Titres un peu plus lumineux */
+.content-card h1,
+.content-card h2,
+.content-card h3,
+.content-card h4 {
+  color: #ffffff;
+}
 
+/* Liens en jaune ImpGeo */
+.content-card a {
+  color: #ffcf2b;
+}
+
+.content-card a:hover {
+  color: #ffe676;
+}
+
+
+/* NAVBAR noir / blanc / jaune */
 .masthead,
 .masthead__inner-wrap,
 .greedy-nav {
@@ -35,13 +53,14 @@ body {
   border-radius: 999px;
   border: 2px solid transparent;
   transition: all 0.2s ease;
+  text-decoration: none;           /* <- plus de souligné */
 }
 
 .greedy-nav .masthead__menu-item a:hover,
 .greedy-nav .masthead__menu-item a:focus {
   color: #ffcf2b;
   border-color: #ffcf2b;
-  text-decoration: none;
+  text-decoration: none;           /* <- reste non souligné au hover */
 }
 
 .greedy-nav .masthead__menu-item a[aria-current="page"],
@@ -49,6 +68,7 @@ body {
   background: #ffcf2b;
   color: #000;
   border-color: #ffcf2b;
+  text-decoration: none;
 }
 
 .greedy-nav__toggle {
