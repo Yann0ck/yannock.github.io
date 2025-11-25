@@ -4,6 +4,7 @@ title: "Yannock Verne"
 permalink: /
 classes: wide
 excerpt: "Streamer, photographe, auteur ImpGeo et créateur de SubOrbital Records."
+nav_exclude: true
 ---
 
 <div class="content-card" markdown="1">

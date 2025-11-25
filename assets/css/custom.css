@@ -125,3 +125,16 @@ a:focus {
 .page__title {
   display: none;
 }
+/* Désactive complètement la barre animée sous les liens du menu */
+.greedy-nav .masthead__menu-item a::before {
+  display: none !important;
+}
+/* Désactive complètement la barre animée sous les liens du menu */
+.greedy-nav a::before,
+.greedy-nav .masthead__menu-item a::before,
+.greedy-nav .masthead__menu-item > a::before,
+.masthead__menu-item a::before,
+.masthead__menu-item--active a::before {
+  display: none !important;
+  content: none !important;
+}
