@@ -1,0 +1,31 @@
+main:
+  - title: "Accueil"
+    url: /
+
+  - title: "Streaming"
+    url: /twitch/
+
+  - title: "Imperial Geographic"
+    url: /impgeo/
+
+  - title: "Photos"
+    url: /photo/
+    children:
+      - title: "Worlds of Stanton"
+        url: /photo/stanton/
+      - title: "Pyro Fragments"
+        url: /photo/pyro/
+      - title: "Crusader Clouds"
+        url: /photo/crusader/
+      - title: "Ships & Silhouettes"
+        url: /photo/ships/
+
+  - title: "SubOrbital Records"
+    url: /suborbital/
+    children:
+      - title: "Artistes"
+        url: /suborbital/artistes/
+      - title: "Compilations"
+        url: /suborbital/compilations/
+      - title: "Événements"
+        url: /suborbital/events/

@@ -1,21 +1,29 @@
-title: "Yannock / Yannock Verne"
-description: "Streamer, éditeur ImpGeo, photographe du Verse & fondateur de SubOrbital Records."
-remote_theme: pages-themes/cayman@v0.2.0
+title: "Yannock Verne"
+description: "Streamer, Imperial Geographic, photographe du Verse & SubOrbital Records."
+url: "https://yannockverne.github.io"
+baseurl: ""
+
+# ----------- THEME -----------
+remote_theme: "mmistakes/minimal-mistakes"
+
 plugins:
+  - jekyll-include-cache
   - jekyll-remote-theme
 
-# URL : remplace par ton user et repo
-url: "https://yannockverne.github.io"
-baseurl: ""  # laisse vide ("") si c'est ton user.github.io
+# ----------- NAVIGATION -----------
+include:
+  - _pages
 
-author:
-  name: "Yannock Verne"
-  email: ""  # optionnel
+# ----------- DEFAULT CONFIG FOR PAGES -----------
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      sidebar: false
+      author_profile: false
+      toc: false
 
-# Navigation principale
-header_pages:
-  - index.md
-  - twitch.md
-  - impgeo.md
-  - photo.md
-  - suborbital.md
+# ----------- BUILD -----------
+markdown: kramdown

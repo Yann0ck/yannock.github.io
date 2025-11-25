@@ -1,0 +1,23 @@
+---
+layout: single
+---
+
+<div class="gallery-grid">
+{% for image in site.static_files %}
+  {% if image.path contains page.gallery_path %}
+    <a href="{{ image.path }}"><img src="{{ image.path }}" class="gallery-img"></a>
+  {% endif %}
+{% endfor %}
+</div>
+
+<style>
+.gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.gallery-grid img {
+  width: 280px;
+  border-radius: 6px;
+}
+</style>
