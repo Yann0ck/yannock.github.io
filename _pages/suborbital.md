@@ -4,7 +4,7 @@ classes: wide
 title: "SubOrbital Records"
 permalink: /suborbital/
 ---
-
+<div class="content-card">
 Label in-lore fondé dans les couloirs de **Levski**, quelque part entre une fréquence parasite et un message radio perdu.
 
 SubOrbital Records accueille des artistes dont la musique est profondément liée au Verse et à leurs trajectoires personnelles.
@@ -36,3 +36,4 @@ Des histoires de départs, de routes, de moteurs, de fatigue et d’amitiés cab
 - **2956.06 – “Same Sky” Acoustic Echoes @ Orison Industrial Deck**
 
 Tout est in-lore, tout est un peu vrai quelque part.
+</div>

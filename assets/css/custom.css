@@ -1,26 +1,62 @@
-/* Fond plein écran */
+/* === FOND GLOBAL === */
 body {
-  background-color: #000; /* couleur de base si pas d'image */
+  background-color: #000;
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
 
-/* Cadre blanc centré pour le contenu */
-.page {
-  display: flex;
-  justify-content: center;
-}
-
-.page__inner {
-  max-width: 1100px;          /* largeur du “cadre” */
-  width: 100%;
-}
-
-.page__content {
-  background: rgba(255, 255, 255, 0.95);
+/* === CARTE BLANCHE CENTRÉE POUR LE CONTENU === */
+.content-card {
+  max-width: 1100px;
+  margin: 3rem auto;
+  background: rgba(255, 255, 255, 0.97);
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* === NAVBAR NOIR / BLANC / JAUNE IMPGEO === */
+
+/* Barre de navigation */
+.masthead,
+.masthead__inner-wrap,
+.greedy-nav {
+  background: #000 !important;
+}
+
+/* Titre du site */
+.greedy-nav .site-title {
+  color: #ffffff !important;
+}
+
+/* Liens du menu principal */
+.greedy-nav .masthead__menu-item a {
+  color: #f0f0f0;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+/* Hover : texte jaune + soulignement */
+.greedy-nav .masthead__menu-item a:hover,
+.greedy-nav .masthead__menu-item a:focus {
+  color: #ffcf2b;              /* jaune ImpGeo */
+  border-color: #ffcf2b;
+  text-decoration: none;
+}
+
+/* Onglet actif (page courante) */
+.greedy-nav .masthead__menu-item a[aria-current="page"],
+.greedy-nav .masthead__menu-item--active a {
+  background: #ffcf2b;
+  color: #000;
+  border-color: #ffcf2b;
+}
+
+/* Couleur du burger menu sur mobile */
+.greedy-nav__toggle {
+  color: #ffffff;
 }
