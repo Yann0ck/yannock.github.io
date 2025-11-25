@@ -74,3 +74,9 @@ body {
 .greedy-nav__toggle {
   color: #ffffff;
 }
+/* Supprime définitivement tous les soulignements du menu */
+.greedy-nav .masthead__menu-item a,
+.greedy-nav .masthead__menu-item a:hover,
+.greedy-nav .masthead__menu-item a:focus {
+  text-decoration: none !important;
+}
