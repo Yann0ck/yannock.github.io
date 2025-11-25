@@ -1,0 +1,19 @@
+title: "Yannock / Yannock Verne"
+description: "Streamer, éditeur ImpGeo, photographe du Verse & fondateur de SubOrbital Records."
+theme: minima
+
+# URL : remplace par ton user et repo
+url: "https://ton-user.github.io"
+baseurl: "/ton-repo"  # laisse vide ("") si c'est ton user.github.io
+
+author:
+  name: "Yannock"
+  email: ""  # optionnel
+
+# Navigation principale
+header_pages:
+  - index.md
+  - twitch.md
+  - impgeo.md
+  - photo.md
+  - suborbital.md
