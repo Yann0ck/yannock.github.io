@@ -19,19 +19,16 @@ body {
 
 /* === NAVBAR NOIR / BLANC / JAUNE IMPGEO === */
 
-/* Barre de navigation */
 .masthead,
 .masthead__inner-wrap,
 .greedy-nav {
   background: #000 !important;
 }
 
-/* Titre du site */
 .greedy-nav .site-title {
   color: #ffffff !important;
 }
 
-/* Liens du menu principal */
 .greedy-nav .masthead__menu-item a {
   color: #f0f0f0;
   padding: 0.4rem 0.9rem;
@@ -40,15 +37,13 @@ body {
   transition: all 0.2s ease;
 }
 
-/* Hover : texte jaune + soulignement */
 .greedy-nav .masthead__menu-item a:hover,
 .greedy-nav .masthead__menu-item a:focus {
-  color: #ffcf2b;              /* jaune ImpGeo */
+  color: #ffcf2b;
   border-color: #ffcf2b;
   text-decoration: none;
 }
 
-/* Onglet actif (page courante) */
 .greedy-nav .masthead__menu-item a[aria-current="page"],
 .greedy-nav .masthead__menu-item--active a {
   background: #ffcf2b;
@@ -56,7 +51,6 @@ body {
   border-color: #ffcf2b;
 }
 
-/* Couleur du burger menu sur mobile */
 .greedy-nav__toggle {
   color: #ffffff;
 }

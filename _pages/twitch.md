@@ -4,7 +4,7 @@ classes: wide
 title: "Streaming Twitch"
 permalink: /twitch/
 ---
-<div class="content-card">
+<div class="content-card" markdown="1">
 Je streame  **Star Citizen**, avec un mélange de chill, de discussions, d’exploration et de projets créatifs (Imperial Geographic, SubOrbital Records, etc.).
 
 ---

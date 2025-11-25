@@ -19,7 +19,7 @@ excerpt: "Streamer, photographe, auteur ImpGeo et créateur de SubOrbital Record
   });
 </script>
 
-<div class="content-card">
+<div class="content-card" markdown="1">
 
 Je suis **Yannock** — streameur, raconteur d’histoires du Verse, photographe d’étoiles et créateur de SubOrbital Records.
 

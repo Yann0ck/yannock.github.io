@@ -5,7 +5,7 @@ title: "Galeries Photos"
 permalink: /photo/
 ---
 
-<div class="content-card">
+<div class="content-card" markdown="1">
 Voici mes galeries :
 
 - [Worlds of Stanton](/photos/stanton/)

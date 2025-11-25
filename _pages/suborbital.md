@@ -4,7 +4,7 @@ classes: wide
 title: "SubOrbital Records"
 permalink: /suborbital/
 ---
-<div class="content-card">
+<div class="content-card" markdown="1">
 Label in-lore fondé dans les couloirs de **Levski**, quelque part entre une fréquence parasite et un message radio perdu.
 
 SubOrbital Records accueille des artistes dont la musique est profondément liée au Verse et à leurs trajectoires personnelles.
