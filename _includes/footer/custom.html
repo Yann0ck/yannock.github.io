@@ -1,0 +1,12 @@
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var images = [
+      "{{ '/assets/images/backgrounds/bg1.png' | relative_url }}",
+      "{{ '/assets/images/backgrounds/bg2.png' | relative_url }}",
+      "{{ '/assets/images/backgrounds/bg3.png' | relative_url }}",
+      "{{ '/assets/images/backgrounds/bg4.png' | relative_url }}"
+    ];
+    var chosen = images[Math.floor(Math.random() * images.length)];
+    document.body.style.backgroundImage = "url('" + chosen + "')";
+  });
+</script>
