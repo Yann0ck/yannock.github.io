@@ -3,18 +3,18 @@ description: "Streamer, Imperial Geographic, photographe du Verse & SubOrbital R
 url: "https://yannockverne.github.io"
 baseurl: ""
 
-# ----------- THEME -----------
 remote_theme: "mmistakes/minimal-mistakes"
 
 plugins:
   - jekyll-include-cache
   - jekyll-remote-theme
 
-# ----------- NAVIGATION -----------
+sass:
+  style: compressed
+
 include:
   - _pages
 
-# ----------- DEFAULT CONFIG FOR PAGES -----------
 defaults:
   - scope:
       path: ""
@@ -25,11 +25,4 @@ defaults:
       author_profile: false
       toc: false
 
-# ----------- BUILD -----------
 markdown: kramdown
-# Images aléatoires pour header
-random_header_images:
-  - /assets/images/header/bg1.png
-  - /assets/images/header/bg2.png
-  - /assets/images/header/bg3.png
-  - /assets/images/header/bg4.png

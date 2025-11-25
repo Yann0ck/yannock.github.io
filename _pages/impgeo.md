@@ -4,7 +4,7 @@ classes: wide
 title: "Imperial Geographic"
 permalink: /impgeo/
 ---
-
+<div class="content-card" markdown="1">
 # Yannock Verne – Imperial Geographic
 
 Je suis **Editorial Supervisor / Executive Editor** chez Imperial Geographic — une version futuriste et fictive de National Geographic, dédiée au Verse de Star Citizen.
@@ -34,3 +34,4 @@ Une année complète passée avec différents mineurs, leurs boucles, leurs dout
 - Coordination éditoriale
 - Relecture, cohérence lore et ton ImpGeo
 - Contributions à certains articles narratifs et interviews
+</div>
