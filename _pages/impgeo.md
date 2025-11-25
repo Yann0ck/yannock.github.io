@@ -1,6 +1,7 @@
 ---
-layout: default
-title: "Imperial Geographic"
+layout: single
+classes: wide
+title "Imperial Geographic"
 permalink: /impgeo/
 ---
 

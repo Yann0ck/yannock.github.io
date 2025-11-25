@@ -1,5 +1,6 @@
 ---
-layout: default
+layout: single
+classes: wide
 title: "SubOrbital Records"
 permalink: /suborbital/
 ---

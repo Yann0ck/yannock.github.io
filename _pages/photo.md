@@ -1,5 +1,6 @@
 ---
 layout: single
+classes: wide
 title: "Galeries Photos"
 permalink: /photo/
 ---
