@@ -12,18 +12,27 @@
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  // Chemin courant (sans slash final, sauf pour la racine)
-  var path = window.location.pathname.replace(/\/+$/, "") || "/";
+  var path = window.location.pathname;
 
-  // Tous les liens du menu principal
+  // enlève le / final sauf pour la racine
+  if (path.length > 1 && path.endsWith("/")) {
+    path = path.slice(0, -1);
+  }
+
   var links = document.querySelectorAll(".greedy-nav .masthead__menu-item a");
 
   links.forEach(function (link) {
     var href = link.getAttribute("href");
     if (!href) return;
 
-    // Normalise aussi le href (enlève les / en trop à la fin)
-    var normalized = href.replace(/\/+$/, "") || "/";
+    // ignore les liens externes
+    if (href.indexOf("http://") === 0 || href.indexOf("https://") === 0) return;
+
+    // normalise aussi le href
+    var normalized = href;
+    if (normalized.length > 1 && normalized.endsWith("/")) {
+      normalized = normalized.slice(0, -1);
+    }
 
     if (normalized === path) {
       link.classList.add("nav-current");
@@ -31,3 +40,4 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+

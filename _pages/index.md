@@ -27,7 +27,7 @@ Exploration, minage, soirées Imperial Geographic, discussions tardives, musique
 - Gameplay d’exploration, minage, events communautaires
 - Ambiance chill, échanges avec le chat, storytelling in-lore
 
-➡️ [Découvrir la partie streaming](/streaming/)
+➡️ [Découvrir la partie streaming](/twitch/)
 
 ### 🖼️ Photographie du Verse – Screenshots & Art
 
