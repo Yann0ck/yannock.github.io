@@ -129,8 +129,7 @@ a:focus {
 .greedy-nav .masthead__menu-item a::before {
   display: none !important;
 }
-/* Désactive complètement la barre animée sous les liens du menu */
-.greedy-nav a::before,
+/* Désactive complètement la barre animée sous les liens du menu (mais pas sur le logo) */
 .greedy-nav .masthead__menu-item a::before,
 .greedy-nav .masthead__menu-item > a::before,
 .masthead__menu-item a::before,
@@ -138,6 +137,7 @@ a:focus {
   display: none !important;
   content: none !important;
 }
+
 /* Base du titre du site dans la nav (boîte "normale" pour la mise en page) */
 .greedy-nav .site-title {
   position: relative;        /* pour positionner le logo par-dessus */
@@ -159,7 +159,7 @@ a:focus {
 
   width: 120px;              /* vraie taille du logo */
   height: 120px;
-  transform: translate(-50%, 18px); 
+  transform: translate(-50%, 24px); 
   /* -50% pour centrer horizontalement,
      18px vers le bas pour le faire déborder. 
      Tu peux essayer 16 / 20 / 22 pour ajuster. */
