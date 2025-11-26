@@ -138,22 +138,33 @@ a:focus {
   display: none !important;
   content: none !important;
 }
-/* Remplacer le texte "Yannock Verne" par le logo rond */
+/* Logo rond dans la nav, qui déborde vers le bas sans agrandir la barre */
 .greedy-nav .site-title {
-  background-image: url('/assets/images/logo-yannock.png'); /* adapte le nom */
+  background-image: url('/assets/images/logo-yannock.png'); /* adapte le nom si besoin */
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
 
   display: block;
-  width: 120px;          /* largeur du logo dans la nav */
-  height: 120px;         /* hauteur du logo dans la nav */
-  text-indent: -9999px; /* planque le texte sans le supprimer pour l’accessibilité */
+  width: 40px;          /* taille "réelle" pour la mise en page */
+  height: 40px;
+  text-indent: -9999px; /* cache le texte mais le garde pour l’accessibilité/SEO */
   overflow: hidden;
 
-  border-radius: 50%;   /* pour être bien rond */
-  margin-top: 10px;     /* fait "déborder" vers le bas sur le header */
+  border-radius: 50%;
+
+  margin: 0 1rem 0 0;   /* espace avec les liens, pas de margin-top ici */
+
+  /* Décalage visuel vers le bas sans toucher à la hauteur de la nav */
+  transform: translateY(10px);
 }
+
+/* S’assurer que la nav laisse voir ce qui déborde */
+.masthead,
+.greedy-nav {
+  overflow: visible;
+}
+
 
 /* Optionnel : réduit un peu le padding autour du logo si besoin */
 .greedy-nav .site-title {
