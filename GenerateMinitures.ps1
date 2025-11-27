@@ -170,5 +170,5 @@ Write-Host "📊 Total: $totalProcessed miniature(s) générée(s)" -ForegroundC
 Write-Host "📄 Fichier index global créé: galleries-index.json" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "💡 Prochaines étapes:" -ForegroundColor Yellow
-Write-Host "   git
+Write-Host "   git"
 Write-Host "═══════════════════════════════════════════════════════" -ForegroundColor Cyan
