@@ -1,0 +1,28 @@
+.giveaway-panel {
+  background: rgba(0,0,0,0.7);
+  padding: 2rem;
+  border-radius: 14px;
+  margin-top: 2rem;
+  box-shadow: 0 0 20px rgba(255,207,43,0.25);
+}
+
+.giveaway-title {
+  color: #ffcf2b;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+#giveaway-status {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+#giveaway-details {
+  margin-top: 0.5rem;
+  text-align: center;
+  color: #ccc;
+  font-size: 1.1rem;
+}
