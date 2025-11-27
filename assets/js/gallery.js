@@ -3,7 +3,7 @@
  * Compatible avec Jekyll + Minimal Mistakes
  */
 
-(function() {
+(function () {
   'use strict';
 
   const GALLERIES_PATH = '/galeries';
@@ -15,7 +15,7 @@
    */
   async function loadGalleries() {
     const container = document.getElementById('galleries-container');
-    
+
     if (!container) {
       console.warn('Container de galeries non trouvé');
       return;
@@ -23,18 +23,29 @@
 
     try {
       const response = await fetch(`${GALLERIES_PATH}/galleries-index.json`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       console.log('galleries-index.json chargé :', data);
 
-      // Normalisation :
-      // - si c'est déjà un tableau -> OK
-      // - sinon -> un seul objet galerie -> on le met dans un tableau
-      const galleries = Array.isArray(data) ? data : [data];
+      let galleries;
+
+      if (Array.isArray(data)) {
+        // 1) JSON = [ {...}, {...} ]
+        galleries = data;
+      } else if (Array.isArray(data.galleries)) {
+        // 2) JSON = { "galleries": [ {...}, {...} ] }
+        galleries = data.galleries;
+      } else if (Array.isArray(data.galeries)) {
+        // 3) JSON = { "galeries": [ {...}, {...} ] }
+        galleries = data.galeries;
+      } else {
+        // 4) JSON = { "avril-2955": {...}, "juin-2955": {...} }
+        galleries = Object.values(data);
+      }
 
       displayGalleries(galleries);
     } catch (error) {
@@ -53,57 +64,58 @@
   function displayGalleries(galleries) {
     const container = document.getElementById('galleries-container');
 
-    const safeGalleries = (galleries || []).filter(
-      g => g && typeof g === 'object'
-    );
-    
-    if (!safeGalleries || safeGalleries.length === 0) {
+    if (!galleries || galleries.length === 0) {
       container.className = 'galleries-error';
       container.innerHTML = '<p>Aucune galerie disponible pour le moment</p>';
       return;
     }
 
     // Trier par date (plus récent en premier)
-    safeGalleries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    galleries.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     container.className = 'galleries-grid';
-    container.innerHTML = safeGalleries.map(gallery => {
-      const coverUrl = `${GALLERIES_PATH}/${gallery.id}/${gallery.coverImage}`;
-      // On ne veut plus afficher la date, donc pas de formatDate ici
-      const galleryName = formatGalleryName(gallery.nom || gallery.id || '');
+    container.innerHTML = galleries
+      .map((gallery) => {
+        const coverUrl = `${GALLERIES_PATH}/${gallery.id}/${gallery.coverImage}`;
+        const galleryName = formatGalleryName(gallery.nom);
 
-      return `
-        <div class="gallery-card" onclick="openGallery('${escapeHtml(gallery.id)}', '${escapeHtml(gallery.nom)}')">
-          <img src="${coverUrl}" 
-               alt="${escapeHtml(galleryName)}" 
+        return `
+        <div class="gallery-card" onclick="openGallery('${escapeHtml(
+          gallery.id
+        )}', '${escapeHtml(gallery.nom)}')">
+          <img src="${coverUrl}"
+               alt="${escapeHtml(galleryName)}"
                class="gallery-card-image"
                loading="lazy"
                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23111%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 fill=%22%23666%22 text-anchor=%22middle%22 dy=%22.3em%22%3EImage non disponible%3C/text%3E%3C/svg%3E'">
           <div class="gallery-card-content">
             <h3 class="gallery-card-title">${galleryName}</h3>
             <div class="gallery-card-meta">
-              <span class="gallery-card-count">📸 ${gallery.imageCount} photo${gallery.imageCount > 1 ? 's' : ''}</span>
+              <span class="gallery-card-count">📸 ${
+                gallery.imageCount
+              } photo${gallery.imageCount > 1 ? 's' : ''}</span>
             </div>
           </div>
         </div>
       `;
-    }).join('');
+      })
+      .join('');
   }
 
   /**
    * Ouvrir une galerie spécifique
    */
-  window.openGallery = async function(galleryId, galleryName) {
+  window.openGallery = async function (galleryId, galleryName) {
     try {
       const response = await fetch(`${GALLERIES_PATH}/${galleryId}/index.json`);
-      
+
       if (!response.ok) {
         throw new Error('Galerie non trouvée');
       }
-      
+
       const gallery = await response.json();
       currentGallery = { ...gallery, id: galleryId };
-      
+
       displayGalleryModal(gallery, galleryName);
     } catch (error) {
       console.error('Erreur ouverture galerie:', error);
@@ -114,72 +126,106 @@
   /**
    * Afficher le modal avec les miniatures
    */
-function displayGalleryModal(gallery, galleryName) {
-  const modal = document.getElementById('gallery-modal');
-  const title = document.getElementById('modal-title');
-  const content = document.getElementById('modal-content');
+  function displayGalleryModal(gallery, galleryName) {
+    const modal = document.getElementById('gallery-modal');
+    const title = document.getElementById('modal-title');
+    const content = document.getElementById('modal-content');
 
-  if (!modal || !title || !content) {
-    console.error('Éléments du modal non trouvés');
-    return;
+    if (!modal || !title || !content) {
+      console.error('Éléments du modal non trouvés');
+      return;
+    }
+
+    title.textContent = formatGalleryName(galleryName);
+
+    content.innerHTML = gallery.images
+      .map((img, index) => {
+        const thumbUrl = `${GALLERIES_PATH}/${currentGallery.id}/${img.thumb}`;
+        const fullUrl = `${GALLERIES_PATH}/${currentGallery.id}/${img.original}`;
+
+        return `
+        <a href="${fullUrl}"
+           class="gallery-thumb"
+           data-pswp-src="${fullUrl}">
+          <img src="${thumbUrl}"
+               alt="Photo ${index + 1} - ${formatGalleryName(galleryName)}"
+               loading="lazy"
+               onerror="this.parentElement.classList.add('loading')">
+        </a>
+      `;
+      })
+      .join('');
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Prépare les dimensions des images puis initialise PhotoSwipe
+    preparePhotoSwipe().catch((err) =>
+      console.error('Erreur préparation PhotoSwipe :', err)
+    );
   }
 
-  console.log('Galerie chargée :', gallery);
+  /**
+   * Préparer les dimensions des images pour PhotoSwipe
+   * (on lit la vraie taille des images plein format puis
+   *  on renseigne data-pswp-width / data-pswp-height)
+   */
+  async function preparePhotoSwipe() {
+    // Toujours détruire une éventuelle lightbox précédente
+    if (lightbox) {
+      lightbox.destroy();
+      lightbox = null;
+    }
 
-  title.textContent = formatGalleryName(galleryName || currentGallery.id);
-  
-content.innerHTML = (gallery.images || []).map((img, index) => {
-  // On essaie plusieurs noms possibles pour les chemins
-  const thumbPath =
-    img.thumb ||
-    img.thumbnail ||
-    img.thumbPath ||
-    img.miniature ||
-    img.path ||
-    img.file ||
-    '';
+    const anchors = Array.from(
+      document.querySelectorAll('#modal-content a.gallery-thumb')
+    );
 
-  const fullPath =
-    img.original ||
-    img.full ||
-    img.image ||
-    img.src ||
-    thumbPath;
+    if (!anchors.length) return;
 
-  const thumbUrl = `${GALLERIES_PATH}/${currentGallery.id}/${thumbPath}`;
-  const fullUrl = `${GALLERIES_PATH}/${currentGallery.id}/${fullPath}`;
-  
-  return `
-    <a href="${fullUrl}" 
-       class="gallery-thumb"
-       data-pswp-width="1"
-       data-pswp-height="1">
-      <img src="${thumbUrl}" 
-           alt="Photo ${index + 1} - ${formatGalleryName(galleryName || currentGallery.id)}" 
-           loading="lazy"
-           onerror="this.parentElement.classList.add('loading')">
-    </a>
-  `;
-}).join('');
+    await Promise.all(
+      anchors.map(
+        (a) =>
+          new Promise((resolve) => {
+            const img = new Image();
+            const src = a.getAttribute('data-pswp-src') || a.href;
 
+            img.onload = () => {
+              const w = img.naturalWidth || img.width || 1920;
+              const h = img.naturalHeight || img.height || 1080;
 
-  modal.classList.add('active');
+              a.setAttribute('data-pswp-width', w);
+              a.setAttribute('data-pswp-height', h);
 
-  // Initialiser PhotoSwipe après un court délai
-  setTimeout(() => initPhotoSwipe(), 100);
-}
+              resolve();
+            };
 
+            img.onerror = () => {
+              // Fallback 16:9 si on n'arrive pas à lire la taille
+              a.setAttribute('data-pswp-width', 1920);
+              a.setAttribute('data-pswp-height', 1080);
+              resolve();
+            };
+
+            img.src = src;
+          })
+      )
+    );
+
+    initPhotoSwipe();
+  }
 
   /**
    * Fermer le modal
    */
-  window.closeGalleryModal = function() {
+  window.closeGalleryModal = function () {
     const modal = document.getElementById('gallery-modal');
-    
+
     if (!modal) return;
-    
+
     modal.classList.remove('active');
-    
+    document.body.style.overflow = '';
+
     if (lightbox) {
       lightbox.destroy();
       lightbox = null;
@@ -190,25 +236,24 @@ content.innerHTML = (gallery.images || []).map((img, index) => {
    * Initialiser PhotoSwipe (lightbox)
    */
   function initPhotoSwipe() {
-    if (lightbox) {
-      lightbox.destroy();
-    }
-
-    // Vérifier que PhotoSwipe est chargé
     if (typeof PhotoSwipeLightbox === 'undefined' || typeof PhotoSwipe === 'undefined') {
       console.error('PhotoSwipe non chargé');
       return;
     }
 
+    if (lightbox) {
+      lightbox.destroy();
+      lightbox = null;
+    }
+
     lightbox = new PhotoSwipeLightbox({
       gallery: '#modal-content',
-      children: 'a',
+      children: 'a.gallery-thumb',
       pswpModule: PhotoSwipe,
-      bgOpacity: 0.95,
-      padding: { top: 50, bottom: 50, left: 50, right: 50 },
+      bgOpacity: 0.96,
+      padding: { top: 32, bottom: 32, left: 24, right: 24 },
       wheelToZoom: true,
-      pinchToClose: false,
-      closeOnVerticalDrag: true
+      showHideAnimationType: 'zoom'
     });
 
     lightbox.init();
@@ -217,28 +262,18 @@ content.innerHTML = (gallery.images || []).map((img, index) => {
   /**
    * Utilitaires
    */
-  function formatDate(dateString) {
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('fr-FR', {
-        year: 'numeric',
-        month: 'long'
-      });
-    } catch (e) {
-      return dateString;
-    }
-  }
-
   function formatGalleryName(name) {
     if (!name || typeof name !== 'string') return '';
     return name
       .replace(/-/g, ' ')
       .replace(/_/g, ' ')
-      .replace(/\b\w/g, l => l.toUpperCase());
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/\b\w/g, (l) => l.toUpperCase());
   }
 
   function escapeHtml(text) {
-    if (typeof text !== 'string') return '';
+    if (!text) return '';
     const map = {
       '&': '&amp;',
       '<': '&lt;',
@@ -246,15 +281,15 @@ content.innerHTML = (gallery.images || []).map((img, index) => {
       '"': '&quot;',
       "'": '&#039;'
     };
-    return text.replace(/[&<>"']/g, m => map[m]);
+    return text.replace(/[&<>"']/g, (m) => map[m]);
   }
 
   /**
    * Gestion du clavier
    */
-  document.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', function (e) {
     const modal = document.getElementById('gallery-modal');
-    
+
     if (modal && modal.classList.contains('active') && e.key === 'Escape') {
       // Ne fermer que si PhotoSwipe n'est pas ouvert
       if (!document.querySelector('.pswp--open')) {
@@ -271,5 +306,4 @@ content.innerHTML = (gallery.images || []).map((img, index) => {
   } else {
     loadGalleries();
   }
-
 })();
