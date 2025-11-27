@@ -418,5 +418,12 @@ a:focus {
   background: #ffe676;
   transform: scale(1.05);
 }
+/* Ajuste l'alignement du header de galerie pour ne pas passer sous le logo */
+@media (min-width: 992px) {
+  .gallery-modal-header {
+    padding-left: 180px; /* décale le titre à droite du logo */
+    padding-right: 3rem;
+  }
+}
 
 @import url('/assets/css/gallery.css');
