@@ -124,29 +124,52 @@ foreach ($folder in $galerieFolders) {
         }
     }
 
+    # ==========================================================
     # Déterminer une date de galerie basée sur les fichiers
-    # On prend par exemple l'image dont le nom est "le plus grand" alphabétiquement
-    # (dans ton cas, toutes les images d'une galerie sont du même jour, donc ça suffit largement)
-    $galleryDate = Get-Date  # fallback si tout rate
+    # Supporte :
+    #  - Game Bar : "Star Citizen  20_07_2025 11_48_45.png"   => dd_MM_yyyy
+    #  - ReShade  : "StarCitizen 2025-07-12 21-59-51.png"    => yyyy-MM-dd
+    # Fallback : date du fichier (LastWriteTime)
+    # ==========================================================
+    $galleryDate = $null
 
     if ($images.Count -gt 0) {
-        # "Star Citizen  13_04_2025 12_50_16.png"
-        $refImage = $images | Sort-Object Name | Select-Object -Last 1
+        # On prend l'image la plus récente (en date de fichier)
+        $refImage = $images | Sort-Object LastWriteTime | Select-Object -Last 1
         $baseName = [System.IO.Path]::GetFileNameWithoutExtension($refImage.Name)
 
-        # On cherche un motif du type 13_04_2025 dans le nom
-        $dateMatch = [regex]::Match($baseName, '\d{2}_\d{2}_\d{4}')
+        # Pattern Game Bar : 13_04_2025
+        $matchGameBar = [regex]::Match($baseName, '\b\d{2}_\d{2}_\d{4}\b')
+        # Pattern ReShade : 2025-07-12
+        $matchReShade = [regex]::Match($baseName, '\b\d{4}-\d{2}-\d{2}\b')
 
-        if ($dateMatch.Success) {
-            $rawDate = $dateMatch.Value  # "13_04_2025"
+        if ($matchGameBar.Success) {
+            $rawDate = $matchGameBar.Value  # "13_04_2025"
             try {
                 $galleryDate = [datetime]::ParseExact($rawDate, 'dd_MM_yyyy', $null)
             }
             catch {
-                # si jamais ça plante, on garde la date du jour
-                $galleryDate = Get-Date
+                $galleryDate = $null
             }
         }
+        elseif ($matchReShade.Success) {
+            $rawDate = $matchReShade.Value  # "2025-07-12"
+            try {
+                $galleryDate = [datetime]::ParseExact($rawDate, 'yyyy-MM-dd', $null)
+            }
+            catch {
+                $galleryDate = $null
+            }
+        }
+
+        # Si aucun des deux formats n'a fonctionné, fallback sur la date du fichier
+        if (-not $galleryDate) {
+            $galleryDate = $refImage.LastWriteTime
+        }
+    }
+
+    if (-not $galleryDate) {
+        $galleryDate = Get-Date
     }
     
     # Créer le fichier index.json
@@ -159,7 +182,7 @@ foreach ($folder in $galerieFolders) {
     
     $galerieData | ConvertTo-Json -Depth 3 | Set-Content -Path $jsonPath -Encoding UTF8
     
-    Write-Host "index.json créé avec $($images.Count) images" -ForegroundColor Cyan
+    Write-Host "index.json créé avec $($images.Count) images (date galerie: $($galerieData.date))" -ForegroundColor Cyan
     Write-Host "$processedCount nouvelle(s) miniature(s) générée(s)" -ForegroundColor Green
     Write-Host ""
     
