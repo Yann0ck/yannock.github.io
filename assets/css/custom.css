@@ -19,17 +19,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===========================
-   CARTE DE CONTENU
+   CARTE DE CONTENU - RESPONSIVE
    =========================== */
 
 .content-card {
   max-width: 1100px;
   margin: 3rem auto;
-  background: rgba(15, 15, 15, 0.92);   /* gris très foncé */
-  color: #f3f3f3;                       /* texte clair */
+  background: rgba(15, 15, 15, 0.92);
+  color: #f3f3f3;
   padding: 2.5rem;
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Responsive content-card */
+@media (max-width: 768px) {
+  .content-card {
+    margin: 1.5rem 1rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-card {
+    margin: 1rem 0.5rem;
+    padding: 1.25rem;
+  }
 }
 
 .content-card h1,
@@ -39,9 +55,34 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffffff;
 }
 
+/* Titres responsives */
+.content-card h1 {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+}
+
+.content-card h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.content-card h3 {
+  font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Paragraphes et listes responsive */
+.content-card p,
+.content-card li {
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+}
+
 /* Liens dans la carte */
 .content-card a {
   color: #ffcf2b;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .content-card a:hover {
@@ -52,19 +93,16 @@ h1, h2, h3, h4, h5, h6 {
    NAVBAR NOIR / BLANC / JAUNE
    =========================== */
 
-/* Fond de la barre */
 .masthead,
 .masthead__inner-wrap,
 .greedy-nav {
   background: #000 !important;
 }
 
-/* Titre du site */
 .greedy-nav .site-title {
   color: #ffffff !important;
 }
 
-/* Liens du menu (état normal) */
 .greedy-nav .masthead__menu-item a {
   color: #f0f0f0;
   padding: 0.4rem 0.9rem;
@@ -73,19 +111,25 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.2s ease;
 }
 
-/* Hover / focus sur un onglet */
+/* Responsive menu items */
+@media (max-width: 768px) {
+  .greedy-nav .masthead__menu-item a {
+    padding: 0.5rem 1rem;
+    display: block;
+    margin: 0.25rem 0;
+  }
+}
+
 .greedy-nav .masthead__menu-item a:hover,
 .greedy-nav .masthead__menu-item a:focus {
   color: #ffcf2b;
   border-color: #ffcf2b;
 }
 
-/* Bouton burger en mobile */
 .greedy-nav__toggle {
   color: #ffffff;
 }
 
-/* AUCUN soulignement dans le menu */
 .greedy-nav .masthead__menu-item a,
 .greedy-nav .masthead__menu-item a:hover,
 .greedy-nav .masthead__menu-item a:focus {
@@ -96,8 +140,6 @@ h1, h2, h3, h4, h5, h6 {
    LIENS GLOBAUX
    =========================== */
 
-/* On vire les soulignements partout (si tu veux du souligné quelque part,
-   on le remettra localement plus tard) */
 a,
 a:hover,
 a:focus {
@@ -108,16 +150,14 @@ a:focus {
    TITRE DE PAGE PAR DÉFAUT
    =========================== */
 
-/* On cache le H1 gris généré par le thème,
-   puisque tu gères ton propre titre dans .content-card */
 .page__title {
   display: none;
 }
-/* Désactive complètement la barre animée sous les liens du menu */
+
 .greedy-nav .masthead__menu-item a::before {
   display: none !important;
 }
-/* Désactive complètement la barre animée sous les liens du menu (mais pas sur le logo) */
+
 .greedy-nav .masthead__menu-item a::before,
 .greedy-nav .masthead__menu-item > a::before,
 .masthead__menu-item a::before,
@@ -126,54 +166,81 @@ a:focus {
   content: none !important;
 }
 
-/* Base du titre du site dans la nav (boîte "normale" pour la mise en page) */
+/* ===========================
+   LOGO - RESPONSIVE
+   =========================== */
+
 .greedy-nav .site-title {
-  position: relative;        /* pour positionner le logo par-dessus */
+  position: relative;
   display: block;
-  width: 40px;               /* petite boîte, c'est elle qui définit la hauteur de la nav */
+  width: 40px;
   height: 40px;
-  text-indent: -9999px;      /* on cache le texte mais il reste dans le DOM */
-  overflow: visible;         /* on laisse déborder ce qu'il y a au-dessus */
-  margin: 0 1.5rem 0 0;      /* espace avec le menu */
+  text-indent: -9999px;
+  overflow: visible;
+  margin: 0 1.5rem 0 0;
   padding: 0;
 }
 
-/* Le vrai logo rond, GRAND, qui déborde de la navbar */
+/* Logo standard (desktop) */
 .greedy-nav .site-title::before {
   content: "";
   position: absolute;
   left: 50%;
   top: 0;
-
-  width: 120px;              /* vraie taille du logo */
+  width: 120px;
   height: 120px;
-  transform: translate(-50%, 24px); 
-  /* -50% pour centrer horizontalement,
-     18px vers le bas pour le faire déborder. 
-     Tu peux essayer 16 / 20 / 22 pour ajuster. */
-
+  transform: translate(-50%, 24px);
   background-image: url('/assets/images/logo-yannock.png');
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-
   border-radius: 50%;
 }
 
-/* La nav doit laisser voir ce qui déborde vers le bas */
+/* Logo tablette */
+@media (max-width: 1024px) {
+  .greedy-nav .site-title::before {
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, 20px);
+  }
+}
+
+/* Logo mobile */
+@media (max-width: 768px) {
+  .greedy-nav .site-title {
+    margin: 0 1rem 0 0;
+  }
+  
+  .greedy-nav .site-title::before {
+    width: 70px;
+    height: 70px;
+    transform: translate(-50%, 12px);
+  }
+}
+
+/* Logo petit mobile */
+@media (max-width: 480px) {
+  .greedy-nav .site-title::before {
+    width: 60px;
+    height: 60px;
+    transform: translate(-50%, 10px);
+  }
+}
+
 .masthead,
 .greedy-nav {
   overflow: visible;
 }
-/* =========================================
-   ONGLET ACTIF DANS LA NAV (PILL JAUNE)
-   Couvre tous les cas : classe ou aria-current,
-   sur <li> ou sur <a>
-   ========================================= */
+
+/* ===========================
+   ONGLET ACTIF
+   =========================== */
 
 .greedy-nav .masthead__menu-item--active > a,
 .greedy-nav .masthead__menu-item[aria-current="page"] > a,
-.greedy-nav .masthead__menu-item > a[aria-current="page"] {
+.greedy-nav .masthead__menu-item > a[aria-current="page"],
+.greedy-nav .masthead__menu-item a.nav-current {
   background: #ffcf2b !important;
   color: #000 !important;
   border-color: #ffcf2b !important;
@@ -182,49 +249,107 @@ a:focus {
   border-radius: 999px;
   box-shadow: 0 0 12px rgba(255, 207, 43, 0.45);
 }
-/* Onglet actif dans la nav, marqué par le script JS */
-.greedy-nav .masthead__menu-item a.nav-current {
-  background: #ffcf2b;
-  color: #000;
-  border-color: #ffcf2b;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 999px;
-  box-shadow: 0 0 12px rgba(255, 207, 43, 0.45);
-}
-/* =========================================
-   INDICATEUR ANIMÉ SOUS LE MENU (BULLE)
-   Suivit de la souris + onglet actif
-   ========================================= */
+
+/* ===========================
+   INDICATEUR ANIMÉ
+   =========================== */
 
 .greedy-nav {
-  position: relative; /* permet de positionner la bulle à l'intérieur */
+  position: relative;
 }
 
-/* La "bulle" (ligne / pill) qui glisse */
 .nav-indicator {
   position: absolute;
-  bottom: 0;              /* collée en bas de la nav */
+  bottom: 0;
   height: 3px;
   border-radius: 999px;
   background: #ffcf2b;
   box-shadow: 0 0 10px rgba(255, 207, 43, 0.7);
-
   width: 0;
   left: 0;
   transform: translateX(0);
   opacity: 0;
   pointer-events: none;
-
   transition:
     width 0.25s ease,
     transform 0.25s ease,
     opacity 0.2s ease;
 }
 
-/* Sur mobile (menu burger), on masque l'indicateur pour éviter les glitchs */
 @media (max-width: 768px) {
   .nav-indicator {
     display: none;
   }
 }
+
+/* ===========================
+   IMAGES RESPONSIVE
+   =========================== */
+
+.content-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* ===========================
+   BLOCKQUOTES RESPONSIVE
+   =========================== */
+
+.content-card blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #ffcf2b;
+}
+
+@media (max-width: 480px) {
+  .content-card blockquote {
+    padding: 0.75rem 1rem;
+    margin: 1rem 0;
+  }
+}
+
+/* ===========================
+   LISTES RESPONSIVE
+   =========================== */
+
+.content-card ul,
+.content-card ol {
+  padding-left: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .content-card ul,
+  .content-card ol {
+    padding-left: 1.25rem;
+  }
+}
+
+/* ===========================
+   EMOJIS DANS LES TITRES
+   =========================== */
+
+.content-card h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ===========================
+   LIENS FLÈCHES ➡️
+   =========================== */
+
+.content-card a[href^="/"]:has-text("➡️"),
+.content-card a:contains("➡️") {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .content-card a {
+    font-size: 0.95rem;
+  }
+}
+@import url('/assets/css/gallery.css');

@@ -1,0 +1,321 @@
+/* ===========================
+   GALERIES PHOTO - STYLES
+   Fichier: assets/css/gallery.css
+   =========================== */
+
+/* Sous-titre de la galerie */
+.gallery-subtitle {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* État de chargement */
+.galleries-loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #ffcf2b;
+  font-size: 1.2rem;
+}
+
+/* ===========================
+   GRILLE DES GALERIES
+   =========================== */
+
+.galleries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .galleries-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Carte de galerie */
+.gallery-card {
+  background: rgba(25, 25, 25, 0.95);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(255, 207, 43, 0.25);
+  border-color: #ffcf2b;
+}
+
+/* Image de couverture */
+.gallery-card-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  background: #111;
+  display: block;
+}
+
+/* Contenu de la carte */
+.gallery-card-content {
+  padding: 1.25rem;
+}
+
+.gallery-card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.gallery-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.gallery-card-count {
+  color: #ffcf2b;
+  font-weight: 600;
+}
+
+/* Message d'erreur */
+.galleries-error {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #ff6b6b;
+}
+
+.galleries-error p:first-child {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.galleries-error p:last-child {
+  font-size: 0.95rem;
+  color: #aaa;
+}
+
+/* ===========================
+   MODAL DE GALERIE
+   =========================== */
+
+.gallery-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.96);
+  z-index: 9999;
+  overflow-y: auto;
+  animation: galleryFadeIn 0.25s ease;
+}
+
+.gallery-modal.active {
+  display: block;
+}
+
+@keyframes galleryFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* En-tête du modal */
+.gallery-modal-header {
+  position: sticky;
+  top: 0;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ffcf2b;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.gallery-modal-title {
+  font-size: 1.6rem;
+  color: #ffcf2b;
+  font-weight: 600;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.gallery-close-btn {
+  background: #ffcf2b;
+  color: #000;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', Arial, sans-serif;
+}
+
+.gallery-close-btn:hover {
+  background: #ffe676;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .gallery-modal-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .gallery-modal-title {
+    font-size: 1.3rem;
+  }
+
+  .gallery-close-btn {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}
+
+/* ===========================
+   GRILLE DE MINIATURES
+   =========================== */
+
+.gallery-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .gallery-modal-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-modal-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+}
+
+/* Miniature individuelle */
+.gallery-thumb {
+  position: relative;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: #111;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-thumb:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(255, 207, 43, 0.3);
+  z-index: 1;
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.gallery-thumb:hover img {
+  opacity: 0.85;
+}
+
+/* Indicateur de chargement sur les miniatures */
+.gallery-thumb::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  border: 3px solid rgba(255, 207, 43, 0.3);
+  border-top-color: #ffcf2b;
+  border-radius: 50%;
+  animation: gallerySpinner 0.8s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gallery-thumb.loading::before {
+  opacity: 1;
+}
+
+@keyframes gallerySpinner {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ===========================
+   PERSONNALISATION PHOTOSWIPE
+   =========================== */
+
+.pswp__button {
+  background-color: rgba(255, 207, 43, 0.1) !important;
+}
+
+.pswp__button:hover {
+  background-color: rgba(255, 207, 43, 0.2) !important;
+}
+
+.pswp__counter {
+  font-family: 'Montserrat', Arial, sans-serif !important;
+  color: #ffcf2b !important;
+  font-weight: 600;
+}
+
+/* ===========================
+   RESPONSIVE FINAL
+   =========================== */
+
+@media (max-width: 480px) {
+  .gallery-card-image {
+    height: 200px;
+  }
+
+  .gallery-card-content {
+    padding: 1rem;
+  }
+
+  .gallery-card-title {
+    font-size: 1.15rem;
+  }
+
+  .gallery-modal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
