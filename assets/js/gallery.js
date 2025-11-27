@@ -13,39 +13,53 @@
   /**
    * Charger l'index des galeries
    */
-  async function loadGalleries() {
-    const container = document.getElementById('galleries-container');
-    
-    if (!container) {
-      console.warn('Container de galeries non trouvé');
-      return;
-    }
-
-    try {
-      const response = await fetch(`${GALLERIES_PATH}/galleries-index.json`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      
-      // On normalise : si c'est déjà un tableau, on le garde,
-      // sinon on va chercher une propriété "galleries" ou "galeries"
-      const galleries = Array.isArray(data)
-        ? data
-        : (data.galleries || data.galeries || []);
-
-displayGalleries(galleries);
-    } catch (error) {
-      console.error('Erreur chargement galeries:', error);
-      container.className = 'galleries-error';
-      container.innerHTML = `
-        <p>❌ Impossible de charger les galeries</p>
-        <p>Assurez-vous d'avoir lancé le script <code>GenerateMiniatures.ps1</code></p>
-      `;
-    }
+async function loadGalleries() {
+  const container = document.getElementById('galleries-container');
+  
+  if (!container) {
+    console.warn('Container de galeries non trouvé');
+    return;
   }
+
+  try {
+    const response = await fetch(`${GALLERIES_PATH}/galleries-index.json`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+
+    // DEBUG : voir ce qui arrive réellement
+    console.log('galleries-index.json chargé :', data);
+
+    let galleries;
+
+    if (Array.isArray(data)) {
+      // 1) JSON = [ {...}, {...} ]
+      galleries = data;
+    } else if (Array.isArray(data.galleries)) {
+      // 2) JSON = { "galleries": [ {...}, {...} ] }
+      galleries = data.galleries;
+    } else if (Array.isArray(data.galeries)) {
+      // 3) JSON = { "galeries": [ {...}, {...} ] }
+      galleries = data.galeries;
+    } else {
+      // 4) JSON = { "november-2955": {...}, "october-2955": {...} }
+      galleries = Object.values(data);
+    }
+
+    displayGalleries(galleries);
+  } catch (error) {
+    console.error('Erreur chargement galeries:', error);
+    container.className = 'galleries-error';
+    container.innerHTML = `
+      <p>❌ Impossible de charger les galeries</p>
+      <p>Assurez-vous d'avoir lancé le script <code>GenerateMiniatures.ps1</code></p>
+    `;
+  }
+}
+
 
   /**
    * Afficher la liste des galeries
@@ -251,3 +265,4 @@ displayGalleries(galleries);
 
 
 })();
+
