@@ -1,5 +1,5 @@
 # ===================================================================
-# Script de génération automatique de miniatures pour galeries
+# Script de generation automatique de miniatures pour galeries
 # Usage: .\GenerateMiniatures.ps1
 # ===================================================================
 
@@ -12,20 +12,20 @@ param(
 # Chargement de l'assembly pour manipulation d'images
 Add-Type -AssemblyName System.Drawing
 
-Write-Host "🎨 Démarrage de la génération des miniatures..." -ForegroundColor Cyan
+Write-Host "Demarrage de la generation des miniatures..." -ForegroundColor Cyan
 Write-Host ""
 
-# Vérifier si le dossier galeries existe
+# Verifier si le dossier galeries existe
 if (-not (Test-Path $GaleriesPath)) {
     Write-Host "Le dossier '$GaleriesPath' n'existe pas!" -ForegroundColor Red
-    Write-Host "Création du dossier..." -ForegroundColor Yellow
+    Write-Host "Creation du dossier..." -ForegroundColor Yellow
     New-Item -ItemType Directory -Path $GaleriesPath | Out-Null
-    Write-Host "Dossier créé. Ajoutez-y vos galeries et relancez le script." -ForegroundColor Green
+    Write-Host "Dossier cree. Ajoutez-y vos galeries et relancez le script." -ForegroundColor Green
     exit
 }
 
 # ------------------------------------------------------------
-# Chargement du watermark (watermark.png à côté du script)
+# Chargement du watermark (watermark.png à côte du script)
 # ------------------------------------------------------------
 
 $watermarkBitmap = $null
@@ -53,22 +53,22 @@ if (Test-Path $watermarkPath) {
         $g.Dispose()
         $wmOriginal.Dispose()
 
-        Write-Host "✅ Watermark chargé depuis $watermarkPath ( ${targetWidth}x${targetHeight} )" -ForegroundColor Green
+        Write-Host "Watermark charge depuis $watermarkPath ( ${targetWidth}x${targetHeight} )" -ForegroundColor Green
     }
     catch {
-        Write-Host "⚠️  Impossible de charger le watermark : $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Host "Impossible de charger le watermark : $($_.Exception.Message)" -ForegroundColor Yellow
         $watermarkBitmap = $null
     }
 }
 else {
-    Write-Host "ℹ️  Aucun watermark trouvé (watermark.png). Conversion sans watermark." -ForegroundColor Yellow
+    Write-Host "Aucun watermark trouve (watermark.png). Conversion sans watermark." -ForegroundColor Yellow
 }
 
 # ------------------------------------------------------------
 # Fonctions utilitaires
 # ------------------------------------------------------------
 
-# Encodeur JPEG partagé
+# Encodeur JPEG partage
 $jpegEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() |
                Where-Object { $_.MimeType -eq 'image/jpeg' }
 
@@ -80,7 +80,7 @@ function New-JpegEncoderParameters([int]$Quality) {
     return $encoderParams
 }
 
-# Fonction pour créer une miniature
+# Fonction pour creer une miniature
 function Create-Thumbnail {
     param(
         [string]$SourcePath,
@@ -96,7 +96,7 @@ function Create-Thumbnail {
         $ratio  = $image.Height / $image.Width
         $height = [int]($Width * $ratio)
         
-        # Création de la miniature
+        # Creation de la miniature
         $thumbnail = New-Object System.Drawing.Bitmap($Width, $height)
         $graphics  = [System.Drawing.Graphics]::FromImage($thumbnail)
         $graphics.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
@@ -114,7 +114,7 @@ function Create-Thumbnail {
         return $true
     }
     catch {
-        Write-Host "  ⚠️  Erreur miniature $($SourcePath): $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Host "Erreur miniature $($SourcePath): $($_.Exception.Message)" -ForegroundColor Yellow
         return $false
     }
 }
@@ -167,7 +167,7 @@ function Convert-ToJpegWithWatermark {
         return $true
     }
     catch {
-        Write-Host "  ⚠️  Erreur conversion $($SourcePath): $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Host "Erreur conversion $($SourcePath): $($_.Exception.Message)" -ForegroundColor Yellow
         return $false
     }
 }
@@ -179,8 +179,8 @@ function Convert-ToJpegWithWatermark {
 $galerieFolders = Get-ChildItem -Path $GaleriesPath -Directory
 
 if ($galerieFolders.Count -eq 0) {
-    Write-Host "Aucune galerie trouvée dans '$GaleriesPath'" -ForegroundColor Red
-    Write-Host "Créez un dossier (ex: 'novembre2955') et ajoutez-y des images PNG" -ForegroundColor Yellow
+    Write-Host "Aucune galerie trouvee dans '$GaleriesPath'" -ForegroundColor Red
+    Write-Host "Creez un dossier (ex: 'novembre2955') et ajoutez-y des images PNG" -ForegroundColor Yellow
     exit
 }
 
@@ -203,24 +203,24 @@ foreach ($folder in $galerieFolders) {
             }
         }
         else {
-            Write-Host "JPG déjà à jour pour $($png.Name)" -ForegroundColor Gray
+            Write-Host "JPG dejà à jour pour $($png.Name)" -ForegroundColor Gray
         }
 
         # Suppression du PNG brut (on garde seulement les JPG)
         Remove-Item $png.FullName -ErrorAction SilentlyContinue
     }
 
-    # 2) Créer le dossier thumbs s'il n'existe pas
+    # 2) Creer le dossier thumbs s'il n'existe pas
     $thumbsPath = Join-Path $folder.FullName "thumbs"
     if (-not (Test-Path $thumbsPath)) {
         New-Item -ItemType Directory -Path $thumbsPath | Out-Null
     }
     
-    # 3) Récupérer toutes les images JPG (originaux définitifs)
+    # 3) Recuperer toutes les images JPG (originaux definitifs)
     $images = Get-ChildItem -Path $folder.FullName -Filter "*.jpg"
     
     if ($images.Count -eq 0) {
-        Write-Host "Aucune image JPG trouvée dans $($folder.Name)" -ForegroundColor Yellow
+        Write-Host "Aucune image JPG trouvee dans $($folder.Name)" -ForegroundColor Yellow
         continue
     }
     
@@ -231,7 +231,7 @@ foreach ($folder in $galerieFolders) {
         $thumbName = [System.IO.Path]::GetFileNameWithoutExtension($image.Name) + "_thumb.jpg"
         $thumbPath = Join-Path $thumbsPath $thumbName
         
-        # Générer la miniature si elle n'existe pas ou si l'image source est plus récente
+        # Generer la miniature si elle n'existe pas ou si l'image source est plus recente
         if (-not (Test-Path $thumbPath) -or $image.LastWriteTime -gt (Get-Item $thumbPath).LastWriteTime) {
             Write-Host "Miniature: $($image.Name)..." -NoNewline
             
@@ -241,7 +241,7 @@ foreach ($folder in $galerieFolders) {
             }
         }
         else {
-            Write-Host " Miniature déjà à jour: $($image.Name)" -ForegroundColor Gray
+            Write-Host " Miniature dejà à jour: $($image.Name)" -ForegroundColor Gray
         }
         
         # Ajouter à la liste pour le JSON
@@ -251,7 +251,7 @@ foreach ($folder in $galerieFolders) {
         }
     }
 
-    # 4) Déterminer une date de galerie basée sur les fichiers (PNG -> JPG déjà gérés)
+    # 4) Determiner une date de galerie basee sur les fichiers (PNG -> JPG dejà geres)
     $galleryDate = $null
 
     if ($images.Count -gt 0) {
@@ -291,7 +291,7 @@ foreach ($folder in $galerieFolders) {
         $galleryDate = Get-Date
     }
     
-    # 5) Créer le fichier index.json
+    # 5) Creer le fichier index.json
     $jsonPath = Join-Path $folder.FullName "index.json"
     $galerieData = @{
         nom    = $folder.Name -replace '-', ' ' -replace '_', ' '
@@ -301,14 +301,14 @@ foreach ($folder in $galerieFolders) {
     
     $galerieData | ConvertTo-Json -Depth 3 | Set-Content -Path $jsonPath -Encoding UTF8
     
-    Write-Host "index.json créé avec $($images.Count) images (date galerie: $($galerieData.date))" -ForegroundColor Cyan
-    Write-Host "$processedCount nouvelle(s) miniature(s) générée(s)" -ForegroundColor Green
+    Write-Host "index.json cree avec $($images.Count) images (date galerie: $($galerieData.date))" -ForegroundColor Cyan
+    Write-Host "$processedCount nouvelle(s) miniature(s) generee(s)" -ForegroundColor Green
     Write-Host ""
     
     $totalProcessed += $processedCount
 }
 
-# 6) Créer le fichier index global des galeries
+# 6) Creer le fichier index global des galeries
 $globalIndex = @()
 foreach ($folder in $galerieFolders) {
     $jsonPath = Join-Path $folder.FullName "index.json"
@@ -332,10 +332,10 @@ $globalIndexPath = Join-Path $GaleriesPath "galleries-index.json"
 $globalIndex | ConvertTo-Json -Depth 3 | Set-Content -Path $globalIndexPath -Encoding UTF8
 
 Write-Host "═══════════════════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "Terminé!" -ForegroundColor Green
-Write-Host "Total: $totalProcessed miniature(s) générée(s)" -ForegroundColor Green
-Write-Host "Fichier index global créé: galleries-index.json" -ForegroundColor Cyan
+Write-Host "Termine!" -ForegroundColor Green
+Write-Host "Total: $totalProcessed miniature(s) generee(s)" -ForegroundColor Green
+Write-Host "Fichier index global cree: galleries-index.json" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Prochaines étapes:" -ForegroundColor Yellow
+Write-Host "Prochaines etapes:" -ForegroundColor Yellow
 Write-Host "   git"
 Write-Host "═══════════════════════════════════════════════════════" -ForegroundColor Cyan
