@@ -114,42 +114,58 @@
   /**
    * Afficher le modal avec les miniatures
    */
-  function displayGalleryModal(gallery, galleryName) {
-    const modal = document.getElementById('gallery-modal');
-    const title = document.getElementById('modal-title');
-    const content = document.getElementById('modal-content');
+function displayGalleryModal(gallery, galleryName) {
+  const modal = document.getElementById('gallery-modal');
+  const title = document.getElementById('modal-title');
+  const content = document.getElementById('modal-content');
 
-    if (!modal || !title || !content) {
-      console.error('Éléments du modal non trouvés');
-      return;
-    }
-
-    title.textContent = formatGalleryName(galleryName || currentGallery.id);
-    
-    content.innerHTML = (gallery.images || []).map((img, index) => {
-      const thumbUrl = `${GALLERIES_PATH}/${currentGallery.id}/${img.thumb}`;
-      const fullUrl = `${GALLERIES_PATH}/${currentGallery.id}/${img.original}`;
-
-      // Si le JSON contient largeur/hauteur, on les utilise pour garder le bon ratio
-      const width  = img.width  || img.w || 3840;
-      const height = img.height || img.h || 2160;
-      
-      return `
-        <a href="${fullUrl}" 
-           class="gallery-thumb"
-          <img src="${thumbUrl}" 
-               alt="Photo ${index + 1} - ${formatGalleryName(galleryName || currentGallery.id)}" 
-               loading="lazy"
-               onerror="this.parentElement.classList.add('loading')">
-        </a>
-      `;
-    }).join('');
-
-    modal.classList.add('active');
-
-    // Initialiser PhotoSwipe après un court délai
-    setTimeout(() => initPhotoSwipe(), 100);
+  if (!modal || !title || !content) {
+    console.error('Éléments du modal non trouvés');
+    return;
   }
+
+  console.log('Galerie chargée :', gallery);
+
+  title.textContent = formatGalleryName(galleryName || currentGallery.id);
+  
+  content.innerHTML = (gallery.images || []).map((img, index) => {
+    // On essaie plusieurs noms possibles pour les chemins
+    const thumbPath =
+      img.thumb ||
+      img.thumbnail ||
+      img.thumbPath ||
+      img.miniature ||
+      img.path ||
+      img.file ||
+      '';
+
+    const fullPath =
+      img.original ||
+      img.full ||
+      img.image ||
+      img.src ||
+      thumbPath;
+
+    const thumbUrl = `${GALLERIES_PATH}/${currentGallery.id}/${thumbPath}`;
+    const fullUrl = `${GALLERIES_PATH}/${currentGallery.id}/${fullPath}`;
+    
+    return `
+      <a href="${fullUrl}" 
+         class="gallery-thumb">
+        <img src="${thumbUrl}" 
+             alt="Photo ${index + 1} - ${formatGalleryName(galleryName || currentGallery.id)}" 
+             loading="lazy"
+             onerror="this.parentElement.classList.add('loading')">
+      </a>
+    `;
+  }).join('');
+
+  modal.classList.add('active');
+
+  // Initialiser PhotoSwipe après un court délai
+  setTimeout(() => initPhotoSwipe(), 100);
+}
+
 
   /**
    * Fermer le modal
