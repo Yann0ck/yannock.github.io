@@ -13,77 +13,64 @@
   /**
    * Charger l'index des galeries
    */
-async function loadGalleries() {
-  const container = document.getElementById('galleries-container');
-  
-  if (!container) {
-    console.warn('Container de galeries non trouvé');
-    return;
-  }
-
-  try {
-    const response = await fetch(`${GALLERIES_PATH}/galleries-index.json`);
+  async function loadGalleries() {
+    const container = document.getElementById('galleries-container');
     
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-    
-    const data = await response.json();
-
-    console.log('galleries-index.json chargé :', data);
-
-    let galleries;
-
-    if (Array.isArray(data)) {
-      // 1) JSON = [ {...}, {...} ]
-      galleries = data;
-    } else if (Array.isArray(data.galleries)) {
-      // 2) JSON = { "galleries": [ {...}, {...} ] }
-      galleries = data.galleries;
-    } else if (Array.isArray(data.galeries)) {
-      // 3) JSON = { "galeries": [ {...}, {...} ] }
-      galleries = data.galeries;
-    } else if (data && data.id && data.nom) {
-      // 4) JSON = un seul objet galerie
-      galleries = [data];
-    } else {
-      // 5) JSON = objet avec plusieurs galeries en propriétés
-      galleries = Object.values(data);
+    if (!container) {
+      console.warn('Container de galeries non trouvé');
+      return;
     }
 
-    displayGalleries(galleries);
-  } catch (error) {
-    console.error('Erreur chargement galeries:', error);
-    container.className = 'galleries-error';
-    container.innerHTML = `
-      <p>❌ Impossible de charger les galeries</p>
-      <p>Assurez-vous d'avoir lancé le script <code>GenerateMiniatures.ps1</code></p>
-    `;
+    try {
+      const response = await fetch(`${GALLERIES_PATH}/galleries-index.json`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('galleries-index.json chargé :', data);
+
+      // Normalisation :
+      // - si c'est déjà un tableau -> OK
+      // - sinon -> un seul objet galerie -> on le met dans un tableau
+      const galleries = Array.isArray(data) ? data : [data];
+
+      displayGalleries(galleries);
+    } catch (error) {
+      console.error('Erreur chargement galeries:', error);
+      container.className = 'galleries-error';
+      container.innerHTML = `
+        <p>❌ Impossible de charger les galeries</p>
+        <p>Assurez-vous d'avoir lancé le script <code>GenerateMiniatures.ps1</code></p>
+      `;
+    }
   }
-}
-
-
 
   /**
    * Afficher la liste des galeries
    */
   function displayGalleries(galleries) {
     const container = document.getElementById('galleries-container');
+
+    const safeGalleries = (galleries || []).filter(
+      g => g && typeof g === 'object'
+    );
     
-    if (!galleries || galleries.length === 0) {
+    if (!safeGalleries || safeGalleries.length === 0) {
       container.className = 'galleries-error';
       container.innerHTML = '<p>Aucune galerie disponible pour le moment</p>';
       return;
     }
 
     // Trier par date (plus récent en premier)
-    galleries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    safeGalleries.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     container.className = 'galleries-grid';
-    container.innerHTML = galleries.map(gallery => {
+    container.innerHTML = safeGalleries.map(gallery => {
       const coverUrl = `${GALLERIES_PATH}/${gallery.id}/${gallery.coverImage}`;
       const date = formatDate(gallery.date);
-      const galleryName = formatGalleryName(gallery.nom);
+      const galleryName = formatGalleryName(gallery.nom || gallery.id || '');
 
       return `
         <div class="gallery-card" onclick="openGallery('${escapeHtml(gallery.id)}', '${escapeHtml(gallery.nom)}')">
@@ -138,9 +125,9 @@ async function loadGalleries() {
       return;
     }
 
-    title.textContent = formatGalleryName(galleryName);
+    title.textContent = formatGalleryName(galleryName || currentGallery.id);
     
-    content.innerHTML = gallery.images.map((img, index) => {
+    content.innerHTML = (gallery.images || []).map((img, index) => {
       const thumbUrl = `${GALLERIES_PATH}/${currentGallery.id}/${img.thumb}`;
       const fullUrl = `${GALLERIES_PATH}/${currentGallery.id}/${img.original}`;
       
@@ -148,10 +135,9 @@ async function loadGalleries() {
         <a href="${fullUrl}" 
            class="gallery-thumb"
            data-pswp-width="3840" 
-           data-pswp-height="2160"
-           target="_blank">
+           data-pswp-height="2160">
           <img src="${thumbUrl}" 
-               alt="Photo ${index + 1} - ${formatGalleryName(galleryName)}" 
+               alt="Photo ${index + 1} - ${formatGalleryName(galleryName || currentGallery.id)}" 
                loading="lazy"
                onerror="this.parentElement.classList.add('loading')">
         </a>
@@ -159,7 +145,6 @@ async function loadGalleries() {
     }).join('');
 
     modal.classList.add('active');
-    //document.body.style.overflow = 'hidden';
 
     // Initialiser PhotoSwipe après un court délai
     setTimeout(() => initPhotoSwipe(), 100);
@@ -174,7 +159,6 @@ async function loadGalleries() {
     if (!modal) return;
     
     modal.classList.remove('active');
-    //document.body.style.overflow = '';
     
     if (lightbox) {
       lightbox.destroy();
@@ -191,7 +175,7 @@ async function loadGalleries() {
     }
 
     // Vérifier que PhotoSwipe est chargé
-    if (typeof PhotoSwipeLightbox === 'undefined') {
+    if (typeof PhotoSwipeLightbox === 'undefined' || typeof PhotoSwipe === 'undefined') {
       console.error('PhotoSwipe non chargé');
       return;
     }
@@ -225,17 +209,16 @@ async function loadGalleries() {
     }
   }
 
-function formatGalleryName(name) {
-  if (!name || typeof name !== 'string') return '';
-
-  return name
-    .replace(/-/g, ' ')
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, l => l.toUpperCase());
-}
-
+  function formatGalleryName(name) {
+    if (!name || typeof name !== 'string') return '';
+    return name
+      .replace(/-/g, ' ')
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, l => l.toUpperCase());
+  }
 
   function escapeHtml(text) {
+    if (typeof text !== 'string') return '';
     const map = {
       '&': '&amp;',
       '<': '&lt;',
@@ -269,8 +252,4 @@ function formatGalleryName(name) {
     loadGalleries();
   }
 
-
 })();
-
-
-
