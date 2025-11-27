@@ -419,13 +419,4 @@ a:focus {
   transform: scale(1.05);
 }
 
-
-/* Forcer PhotoSwipe à respecter le ratio des images */
-.pswp__img {
-  width: auto !important;
-  height: auto !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  object-fit: contain !important;
-}
 @import url('/assets/css/gallery.css');
