@@ -47,15 +47,25 @@ classes: wide
       {% assign logs = site.logbook | sort: "date" | reverse %}
       {% if logs.size > 0 %}
         {% for entry in logs %}
-          <article class="yv-log-entry">
+            <article class="yv-log-entry">
             <h3>{{ entry.title }}</h3>
             <p class="yv-log-meta">
-              {{ entry.date | date: "%Y.%m.%d" }}
+                {{ entry.date | date: "%Y.%m.%d" }}
             </p>
+
             <p class="yv-log-excerpt">
-              {{ entry.excerpt }}
+                {{ entry.excerpt }}
             </p>
-          </article>
+
+            <button class="yv-log-open" data-target="log-{{ entry.slug }}">
+                Lire le récit complet
+            </button>
+
+            <!-- Contenu complet (Markdown), caché -->
+            <div id="log-{{ entry.slug }}" class="yv-log-full" hidden>
+                {{ entry.content }}
+            </div>
+            </article>
         {% endfor %}
       {% else %}
         <p>Aucun log pour le moment. Le premier récit arrive bientôt.</p>
@@ -128,4 +138,14 @@ classes: wide
   </section>
 
 </div>
+<div id="yv-log-modal" class="yv-log-modal" aria-hidden="true">
+  <div class="yv-log-modal__backdrop" data-log-close></div>
+  <div class="yv-log-modal__content" role="dialog" aria-modal="true" aria-label="Récit complet">
+    <button class="yv-log-modal__close" type="button" aria-label="Fermer" data-log-close>
+      ×
+    </button>
+    <div class="yv-log-modal__inner"></div>
+  </div>
+</div>
+
 <script src="{{ '/assets/js/site.js' | relative_url }}"></script>

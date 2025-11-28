@@ -32,3 +32,46 @@ document.addEventListener("DOMContentLoaded", function () {
     activateTab(firstTab);
   }
 });
+// ----- MODAL / LIGHTBOX POUR LE JOURNAL DE BORD -----
+(function () {
+  const modal = document.getElementById("yv-log-modal");
+  if (!modal) return;
+
+  const modalInner = modal.querySelector(".yv-log-modal__inner");
+  const closeElements = modal.querySelectorAll("[data-log-close]");
+
+  function openModal(html) {
+    modalInner.innerHTML = html;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("yv-lock-scroll");
+  }
+
+  function closeModal() {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    modalInner.innerHTML = "";
+    document.body.classList.remove("yv-lock-scroll");
+  }
+
+  // Boutons d'ouverture
+  document.querySelectorAll(".yv-log-open").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.dataset.target;
+      const fullNode = document.getElementById(targetId);
+      if (!fullNode) return;
+      openModal(fullNode.innerHTML);
+    });
+  });
+
+  // Fermeture : croix, backdrop, ESC
+  closeElements.forEach((el) => {
+    el.addEventListener("click", closeModal);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("is-open")) {
+      closeModal();
+    }
+  });
+})();
