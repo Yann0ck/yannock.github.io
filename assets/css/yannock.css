@@ -35,18 +35,25 @@ a:hover {
   text-decoration: none;
 }
 
-/* Contenu principal un peu mis en avant */
+/* Centrer la zone de contenu principale */
 .page {
   background: transparent;
+  max-width: 1100px;   /* largeur max du bloc central */
+  margin: 1.5rem auto 3rem auto; /* centre horizontalement + marges haut/bas */
 }
 
+/* On évite que l'intérieur rajoute des marges bizarres */
+.page__inner {
+  margin: 0;
+}
+
+/* On garde notre bloc "carte" translucide */
 .page__content {
   background: rgba(5, 11, 22, 0.85);
   border-radius: 1rem;
   padding: 1.5rem 1.75rem;
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
-
 /* Titrage */
 .page__content h1,
 .page__content h2,
@@ -173,3 +180,35 @@ a:hover {
   margin-top: 1.5rem;
 }
 
+/* ==============================
+   FOOTER DARK THEME
+   ============================== */
+
+.page__footer {
+  background: #020815;
+  color: var(--yv-text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Texte + liens dans le footer */
+.page__footer p,
+.page__footer span {
+  color: var(--yv-text-muted);
+}
+
+.page__footer a {
+  color: var(--yv-accent);
+}
+
+.page__footer a:hover {
+  color: #ffffff;
+}
+
+/* Icônes éventuelles dans le footer */
+.page__footer .social-icons a {
+  color: var(--yv-text-muted);
+}
+
+.page__footer .social-icons a:hover {
+  color: var(--yv-accent);
+}
