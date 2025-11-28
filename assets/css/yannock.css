@@ -213,3 +213,24 @@ a:hover {
 .page__footer .social-icons a:hover {
   color: var(--yv-accent);
 }
+/* ==============================
+   HERO / LOGO SUR LA HOME
+   ============================== */
+
+/* On masque le titre texte uniquement sur la home */
+.yv-home .page__title {
+  display: none;
+}
+
+/* Conteneur du logo/bandeau */
+.yv-hero {
+  margin-bottom: 1rem;
+}
+
+/* Logo principal */
+.yv-hero__logo {
+  display: block;
+  max-width: 260px;   /* adapte quand tu auras ton visuel */
+  height: auto;
+}
+é

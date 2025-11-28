@@ -5,9 +5,14 @@ permalink: /
 sidebar: false
 author_profile: false
 toc: false
-classes: wide
+classes: yv-home wide
 
 ---
+<div class="yv-hero">
+  <!-- Quand ton logo sera prêt, remplace le src par le bon chemin -->
+  <img src="/assets/images/logo-yannock.png" alt="Yannock Verne" class="yv-hero__logo">
+</div>
+
 <div class="yv-tabs">
 
   <!-- NAVIGATION ONGLET -->
