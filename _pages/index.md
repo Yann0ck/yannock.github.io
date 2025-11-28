@@ -9,7 +9,7 @@ classes: yv-home wide
 
 ---
 <div class="yv-hero">
-  <!-- Quand ton logo sera prêt, remplace le src par le bon chemin -->
+  <div class="yv-hero__bg"></div>
   <img src="/assets/images/logo-yannock.png" alt="Yannock Verne" class="yv-hero__logo">
 </div>
 

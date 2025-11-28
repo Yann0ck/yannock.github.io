@@ -95,10 +95,10 @@ a:hover {
 .yv-tab-link {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 999px;
-  padding: 0.35rem 1.2rem;
+  padding: 0.55rem 1.5rem;      /* <-- plus haut, plus large */
   background: rgba(5, 11, 22, 0.9);
   color: var(--yv-text-muted);
-  font-size: 0.95rem;
+  font-size: 1rem;              /* <-- un poil plus grand */
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -106,6 +106,7 @@ a:hover {
     color 0.2s ease,
     transform 0.12s ease;
 }
+
 
 .yv-tab-link:hover {
   background: #102337;
@@ -230,7 +231,6 @@ a:hover {
 /* Logo principal */
 .yv-hero__logo {
   display: block;
-  max-width: 260px;   /* adapte quand tu auras ton visuel */
+  max-width: 160px;   /* adapte quand tu auras ton visuel */
   height: auto;
 }
-é

@@ -125,3 +125,38 @@
     max-width: none;
   }
 }
+/* ==============================
+   HERO HEADER AVEC BANDEAU
+   ============================== */
+
+.yv-home .yv-hero {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 1.5rem auto;
+  height: 348px;  /* hauteur de ton bandeau */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bandeau */
+.yv-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets/images/header-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 1rem;
+  opacity: 0.65;                   /* tu peux monter à 0.8 si tu veux plus visible */
+  filter: brightness(1.2);         /* optionnel, donne un effet plus lumineux */
+}
+
+/* Logo par-dessus */
+.yv-hero__logo {
+  position: relative;
+  z-index: 2;
+  max-width: 260px;                 /* adapte à ton visuel */
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(0,0,0,0.8)); /* pour un rendu propre */
+}
